@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>ToDo List</h1>
+        <ul>
+            <li v-for="task in tasks" :key="task.id">
+                <div class="text-and-buttons">
+                    <span @click="toggleTaskCompletion(task)" :class="{ completed: task.completed }">
+                        {{ task.text }}
+                    </span>
+                    <div class="task-buttons">
+                        <button @click="task.showDescription = !task.showDescription">Vedi</button>
+                        <button @click="task.isEditing = !task.isEditing">Modifica</button>
+                        <button @click.stop="deleteTask(task)">Delete</button>
+                    </div>
+                </div>
+                <p v-if="task.showDescription" class="little-right">
+                    {{ task.description }}
+                </p>
+                <div v-if="task.isEditing" class="edit-task">
+                    <input type="text" v-model="task.newText" placeholder="Edit Task Text">
+                    <input type="text" v-model="task.newDescription" placeholder="Edit Description">
+                    <button @click="updateTask(task)">Salva</button>
+                </div>
+                
+            </li>
+        </ul>
+        <div class="add-task">
+            <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask" >
+            <input type="text" v-model="newDescription" placeholder="Add a description" @keyup.enter="addTask" >
+            <button @click="addTask" >Add Task</button>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

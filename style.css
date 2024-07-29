@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+#app {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+input {
+    padding: 10px;
+    width: calc(100% - 22px);
+    margin-top: 10px;
+}
+
+button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+.completed {
+    text-decoration: line-through;
+}
+.add-task, .edit-task {
+    display: flex;
+    align-items: center; /* Allinea gli elementi verticalmente al centro */
+    gap: 10px; /* Spazio tra gli elementi */
+    margin-top: 20px; /* Margine superiore per separare dalla lista */
+}
+
+.add-task input[type="text"], .edit-task input[type="text"] {
+    flex: 1; /* Fa sì che gli input occupino lo spazio disponibile */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.add-task button, .edit-task button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-task button:hover, .edit-task button:hover {
+    background-color: #0056b3;
+}
+.text-and-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.task-buttons {
+    display: flex;
+    gap: 10px;
+}
+.task-buttons button {
+    margin: 0;
+    padding: 10px;
+    border-radius: 4px;
+}
+.little-right {
+    margin: 0;
+    margin-left: 2%;
+}
