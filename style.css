@@ -86,3 +86,35 @@ button:hover {
     margin: 0;
     margin-left: 2%;
 }
+.remove-paragraph {
+    background-color: red; /* Sfondo rosso per il pulsante */
+    border: none; /* Rimuove il bordo del pulsante */
+    color: white; /* Colore del testo */
+    cursor: pointer; /* Cambia il cursore quando si passa sopra il pulsante */
+    font-size: 1rem; /* Dimensione del font */
+    padding: 0.3rem 0.5rem; /* Spaziatura interna del pulsante */
+    border-radius: 0.25rem; /* Angoli arrotondati */
+    position: absolute; /* Posiziona il pulsante assolutamente rispetto al contenitore parent */
+    right: 0; /* Allinea il pulsante a destra */
+}
+
+.remove-paragraph:hover {
+    background-color: darkred; /* Colore di sfondo quando il pulsante è in hover */
+}
+
+.remove-paragraph i {
+    vertical-align: middle; /* Allinea l'icona verticalmente */
+}
+
+/* Aggiungi margine a sinistra per separare l'icona dal testo */
+.remove-paragraph + br {
+    margin-left: 1rem;
+}
+.to-the-side {
+    display: flex;
+    align-items: center; /* Allinea verticalmente il testo e il pulsante */
+    margin-top: 0.8%; /* Spazio tra i paragrafi */
+    margin-bottom: 1%;
+    width: 100%; /* Occupa tutta la larghezza del contenitore parent */
+    position: relative; /* Necessario per posizionare il pulsante di rimozione assolutamente */
+}

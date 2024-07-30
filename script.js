@@ -5,7 +5,9 @@ createApp({
         return {
             tasks: [],
             newTask: '',
-            newDescription: ''
+            newDescription: '',
+            paragraphDescription: '', // Per aggiungere paragrafi alle descrizioni esistenti
+            editingTaskId: null // Per tenere traccia della task in modifica
         };
     },
     methods: {
@@ -24,37 +26,43 @@ createApp({
         },
         addTask() {
             if (this.newTask.trim() !== '') {
-                const task = {
-                    id: Date.now(),
-                    text: this.newTask,
-                    completed: false,
-                    description: this.newDescription || ''
-                };
+                const existingTask = this.tasks.find(task => task.text === this.newTask && !task.completed);
 
-                axios.post('api.php', { task })
-                    .then(response => {
-                        if (response.data.status === 'success') {
-                            this.tasks.push(task);
-                            this.newTask = '';
-                            this.newDescription = '';
-                        } else {
-                            alert('Error: ' + response.data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('There was an error!', error);
-                    });
+                if (existingTask) {
+                    alert('Task with this name already exists. Please add a description to the existing task.');
+                } else {
+                    const task = {
+                        id: Date.now(),
+                        text: this.newTask,
+                        completed: false,
+                        description: this.newDescription ? [this.newDescription] : []
+                    };
+
+                    axios.post('api.php', { task })
+                        .then(response => {
+                            if (response.data.status === 'success') {
+                                this.tasks.push(task);
+                                this.newTask = '';
+                                this.newDescription = '';
+                            } else {
+                                alert('Error: ' + response.data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('There was an error!', error);
+                        });
+                }
             }
         },
         toggleTaskCompletion(task) {
-            const updatedTask = {...task, completed: !task.completed};
+            const updatedTask = { ...task, completed: !task.completed };
             axios.put('api.php', updatedTask)
             .then(response => {
                 if (response.data.status === 'success') {
-                    const index= this.tasks.findIndex(t => t.id === task.id);
+                    const index = this.tasks.findIndex(t => t.id === task.id);
                     if (index !== -1) {
                         this.tasks[index].completed = updatedTask.completed;
-                    } 
+                    }
                 } else {
                     alert('Error: ' + response.data.message);
                 }
@@ -79,20 +87,17 @@ createApp({
             } else {
                 alert('Task must be completed before deletion');
             }
-        },// pre modifica
+        },
         updateTask(task) {
-            // Crea una copia dell'attività corrente con i nuovi valori
             const updatedTask = { 
                 id: task.id,
                 text: task.text,
-                description: task.description,
-                completed: task.completed // Mantenere lo stato di completamento se necessario
+                description: task.description, // Mantiene tutti i paragrafi esistenti
+                completed: task.completed
             };
-    
-            // Chiude la modalità di modifica
+
             task.isEditing = false;
-    
-            // Invia l'aggiornamento al server
+
             axios.put('api.php', updatedTask)
             .then(response => {
                 if (response.data.status === 'success') {
@@ -104,10 +109,26 @@ createApp({
             .catch(error => {
                 console.error('There was an error!', error);
             });
+        },
+        addParagraphToDescription(task) {
+            if (this.paragraphDescription.trim() !== '') {
+                task.description.push(this.paragraphDescription);
+                this.paragraphDescription = '';
+                this.updateTask(task);
+                this.startEditing(task);
+            }
+        },
+        removeParagraphFromDescription(task, index) {
+            task.description.splice(index, 1);
+            this.updateTask(task);
+            
+        },
+        startEditing(task) {
+            this.editingTaskId = task.id;
+            this.paragraphDescription = '';
+            task.isEditing = true;
         }
-        //aggiungi qua nuovo method
     },
-    
     mounted() {
         this.fetchTasks();
     }

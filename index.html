@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <!-- Aggiungi il link aggiornato per FontAwesome 6.6.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Document</title>
 </head>
 <body>
@@ -16,26 +18,50 @@
                         {{ task.text }}
                     </span>
                     <div class="task-buttons">
-                        <button @click="task.showDescription = !task.showDescription">Vedi</button>
-                        <button @click="task.isEditing = !task.isEditing">Modifica</button>
-                        <button @click.stop="deleteTask(task)">Delete</button>
+                        <!-- Mostra l'icona dell'occhio se la descrizione non è visibile, altrimenti mostra l'occhio con la linea -->
+                        <button @click="task.showDescription = !task.showDescription">
+                            <i :class="task.showDescription ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                        </button>
+                        <button @click="task.isEditing = !task.isEditing">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button @click.stop="deleteTask(task)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>
                 <p v-if="task.showDescription" class="little-right">
-                    {{ task.description }}
+                    <span v-for="(paragraph, index) in task.description" :key="index" class="to-the-side">
+                        {{ paragraph }}
+                        <!-- Pulsante di rimozione con icona e classe CSS aggiornata -->
+                        <button @click="removeParagraphFromDescription(task, index)" class="remove-paragraph">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </span>
                 </p>
                 <div v-if="task.isEditing" class="edit-task">
-                    <input type="text" v-model="task.text">
-                    <input type="text" v-model="task.description">
-                    <button @click="updateTask(task)">Salva</button>
+                    <!-- Input per modificare il nome della task -->
+                    <input type="text" v-model="task.text" placeholder="Modifica Task">
+
+                    <!-- Area di testo per aggiungere nuovi paragrafi alla descrizione -->
+                    <textarea v-model="paragraphDescription" placeholder="Add a new paragraph"></textarea>
+                    <button @click="addParagraphToDescription(task)">
+                        <i class="fa-solid fa-plus"></i> Add Paragraph
+                    </button>
+                    
+                    <!-- Pulsante per salvare le modifiche -->
+                    <button @click="updateTask(task)">
+                        <i class="fa-solid fa-save"></i> Save
+                    </button>
                 </div>
-                
             </li>
         </ul>
         <div class="add-task">
-            <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask" >
-            <input type="text" v-model="newDescription" placeholder="Add a description" @keyup.enter="addTask" >
-            <button @click="addTask" >Add Task</button>
+            <input type="text" v-model="newTask" placeholder="Add a new task" @keyup.enter="addTask">
+            <input type="text" v-model="newDescription" placeholder="Add a description" @keyup.enter="addTask">
+            <button @click="addTask">
+                <i class="fa-solid fa-plus"></i> Add Task
+            </button>
         </div>
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
