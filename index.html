@@ -25,8 +25,8 @@
                     {{ task.description }}
                 </p>
                 <div v-if="task.isEditing" class="edit-task">
-                    <input type="text" v-model="task.newText" placeholder="Edit Task Text">
-                    <input type="text" v-model="task.newDescription" placeholder="Edit Description">
+                    <input type="text" v-model="task.text">
+                    <input type="text" v-model="task.description">
                     <button @click="updateTask(task)">Salva</button>
                 </div>
                 

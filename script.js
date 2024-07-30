@@ -79,37 +79,24 @@ createApp({
             } else {
                 alert('Task must be completed before deletion');
             }
-        },
+        },// pre modifica
         updateTask(task) {
-            // Crea una copia dell'attività corrente e aggiorna solo i campi non vuoti
-            const updatedTask = { ...task };
-        
-            // Solo se i nuovi valori non sono vuoti, aggiorniamo i campi dell'attività
-            if (task.newText.trim() !== '') {
-                updatedTask.text = task.newText;
-            }
-            if (task.newDescription.trim() !== '') {
-                updatedTask.description = task.newDescription;
-            }
-        
+            // Crea una copia dell'attività corrente con i nuovi valori
+            const updatedTask = { 
+                id: task.id,
+                text: task.text,
+                description: task.description,
+                completed: task.completed // Mantenere lo stato di completamento se necessario
+            };
+    
             // Chiude la modalità di modifica
-            updatedTask.isEditing = false;
-        
+            task.isEditing = false;
+    
             // Invia l'aggiornamento al server
             axios.put('api.php', updatedTask)
             .then(response => {
                 if (response.data.status === 'success') {
-                    // Trova l'indice della task aggiornata
-                    const index = this.tasks.findIndex(t => t.id === task.id);
-                    if (index !== -1) {
-                        // Aggiorna solo i campi modificati
-                        if (task.newText.trim() !== '') {
-                            this.tasks[index].text = updatedTask.text;
-                        }
-                        if (task.newDescription.trim() !== '') {
-                            this.tasks[index].description = updatedTask.description;
-                        }
-                    }
+                    // Nessun bisogno di ulteriori aggiornamenti se i dati sono già legati a `task`
                 } else {
                     alert('Error: ' + response.data.message);
                 }
