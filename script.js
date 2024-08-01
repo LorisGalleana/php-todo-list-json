@@ -29,7 +29,7 @@ createApp({
                 const existingTask = this.tasks.find(task => task.text === this.newTask && !task.completed);
 
                 if (existingTask) {
-                    alert('Task with this name already exists. Please add a description to the existing task.');
+                    alert('Esiste già una task con questo nome. Per favore, aggiungi la descrizione alla task già esistente.');
                 } else {
                     const task = {
                         id: Date.now(),
